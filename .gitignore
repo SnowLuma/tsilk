@@ -1,0 +1,5 @@
+/node_modules
+pnpm-lock.yaml
+/out_matrix
+c_diag_trace.jsonl
+/dist

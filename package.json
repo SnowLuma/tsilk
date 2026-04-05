@@ -1,0 +1,25 @@
+{
+  "name": "silk-ts",
+  "version": "1.0.0",
+  "description": "Pure TypeScript SILK v3 audio codec encoder/decoder",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "scripts": {
+    "build": "tsc",
+    "test": "tsx test/matrix.test.ts"
+  },
+  "keywords": [
+    "silk",
+    "audio",
+    "codec",
+    "encoder",
+    "decoder",
+    "voice"
+  ],
+  "license": "BSD-3-Clause",
+  "devDependencies": {
+    "@types/node": "^20.0.0",
+    "tsx": "^4.21.0",
+    "typescript": "^5.4.0"
+  }
+}
