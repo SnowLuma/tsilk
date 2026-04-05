@@ -1,6 +1,7 @@
 {
   "name": "silk-ts",
   "version": "1.0.0",
+  "type": "module",
   "description": "Pure TypeScript SILK v3 audio codec encoder/decoder",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
@@ -20,6 +21,10 @@
   "devDependencies": {
     "@types/node": "^20.0.0",
     "tsx": "^4.21.0",
-    "typescript": "^5.4.0"
+    "typescript": "^5.4.0",
+    "wavefile": "^11.0.0"
+  },
+  "dependencies": {
+    "@breezystack/lamejs": "^1.2.7"
   }
 }
