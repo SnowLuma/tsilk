@@ -3,3 +3,4 @@ pnpm-lock.yaml
 /out_matrix
 c_diag_trace.jsonl
 /dist
+/out_audio_test

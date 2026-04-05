@@ -1,7 +1,11 @@
 import * as fs from 'fs';
 import * as path from 'path';
 import { execFileSync } from 'child_process';
+import { fileURLToPath } from 'node:url';
 import { decodeSilkFile, encodeSilkFile } from '../src/silk_file';
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
 // --- 类型定义 ---
 
