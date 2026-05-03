@@ -49,6 +49,9 @@ pnpm test
 本项目代码主要移植自以下项目，该项目提供了 SILK v3 的参考实现和 C 二进制包：
 - [silk-v3-decoder](https://github.com/kn007/silk-v3-decoder) (MIT 协议)
 
+## 辅助编程
+Claude Opus4.6
+
 ## 许可证
 
 本项目遵循 MIT 许可证。详细内容请参阅 [LICENSE](LICENSE) 文件。
