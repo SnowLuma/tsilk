@@ -388,15 +388,15 @@ export class SilkEncoder {
         this.state.LBRR_GainIncreases = Math.max(8 - (pl >> 1), 0) | 0;
         this.state.sCmn.LBRR_GainIncreases = this.state.LBRR_GainIncreases;
         if (this.state.LBRR_enabled && pl > D.LBRR_LOSS_THRES) {
-          (this.state as any).inBandFEC_SNR_comp_Q8 =
+          this.state.inBandFEC_SNR_comp_Q8 =
             ((6 << 8) - (this.state.LBRR_GainIncreases << 7)) | 0;
         } else {
-          (this.state as any).inBandFEC_SNR_comp_Q8 = 0;
+          this.state.inBandFEC_SNR_comp_Q8 = 0;
           this.state.LBRR_enabled = 0;
           this.state.sCmn.LBRR_enabled = 0;
         }
       } else {
-        (this.state as any).inBandFEC_SNR_comp_Q8 = 0;
+        this.state.inBandFEC_SNR_comp_Q8 = 0;
         this.state.LBRR_enabled = 0;
         this.state.sCmn.LBRR_enabled = 0;
       }
@@ -405,17 +405,17 @@ export class SilkEncoder {
       this.state.sCmn.LBRR_enabled = 0;
       this.state.LBRR_GainIncreases = 0;
       this.state.sCmn.LBRR_GainIncreases = 0;
-      (this.state as any).inBandFEC_SNR_comp_Q8 = 0;
+      this.state.inBandFEC_SNR_comp_Q8 = 0;
     }
 
     if (fs_kHz === 24) {
-      (this.state as any).mu_LTP_Q8 = toQ8(TP.MU_LTP_QUANT_SWB);
+      this.state.mu_LTP_Q8 = toQ8(TP.MU_LTP_QUANT_SWB);
     } else if (fs_kHz === 16) {
-      (this.state as any).mu_LTP_Q8 = toQ8(TP.MU_LTP_QUANT_WB);
+      this.state.mu_LTP_Q8 = toQ8(TP.MU_LTP_QUANT_WB);
     } else if (fs_kHz === 12) {
-      (this.state as any).mu_LTP_Q8 = toQ8(TP.MU_LTP_QUANT_MB);
+      this.state.mu_LTP_Q8 = toQ8(TP.MU_LTP_QUANT_MB);
     } else {
-      (this.state as any).mu_LTP_Q8 = toQ8(TP.MU_LTP_QUANT_NB);
+      this.state.mu_LTP_Q8 = toQ8(TP.MU_LTP_QUANT_NB);
     }
 
     // Complexity controls pitch/LPC/LTP behavior; it must be applied per option set.

@@ -124,11 +124,8 @@ export function find_pred_coefs_FIX(
   }
 
   const LPC_in_pre = new Int16Array(D.NB_SUBFR * (subfrLen + lpcOrder));
-  let LPC_in_pre_ptr = 0;
-  
-  let res_pitch_ptr = 0;
 
-  if ((psEncCtrl as any).sCmn?.sigtype === 0 || (psEncCtrl as any).sigtype === 0 /*VOICED*/) {
+  if (psEncCtrl.sCmn?.sigtype === 0 || psEncCtrl.sigtype === 0 /*VOICED*/) {
     const WLTP = new Int32Array(D.NB_SUBFR * D.LTP_ORDER * D.LTP_ORDER);
     const b_Q14 = new Int16Array(D.NB_SUBFR * D.LTP_ORDER);
     const corr_rshifts = new Int32Array(D.NB_SUBFR);
@@ -158,8 +155,8 @@ export function find_pred_coefs_FIX(
       psEncCtrl.LTPIndex,
       perIndex,
       WLTP,
-      (psEnc as any).mu_LTP_Q8 ?? 20,
-      ((psEnc as any).sCmn?.LTPQuantLowComplexity ?? 0) | 0,
+      psEnc.mu_LTP_Q8 ?? 20,
+      (psEnc.sCmn?.LTPQuantLowComplexity ?? 0) | 0,
     );
     psEncCtrl.PERIndex = perIndex.val;
     psEncCtrl.LTPCoef_Q14.set(b_Q14);
@@ -202,7 +199,7 @@ export function find_pred_coefs_FIX(
     prevNLSF,
     ((psEnc.sCmn?.useInterpolatedNLSFs ?? 1) *
       (1 - (psEnc.first_frame_after_reset | 0))) |
-      0,
+    0,
     lpcOrder,
     LPC_in_pre,
     0,
@@ -251,10 +248,10 @@ export function find_pred_coefs_FIX(
     psEncCtrl.sigtype === D.SIG_TYPE_VOICED
       ? SKP_SMLAWB(6554, -838848, psEnc.speech_activity_Q8)
       : SKP_SMLAWB(
-          13107,
-          -1677696,
-          psEnc.speech_activity_Q8 + ((psEncCtrl as any).sparseness_Q8 ?? 0),
-        );
+        13107,
+        -1677696,
+        psEnc.speech_activity_Q8 + (psEncCtrl.sparseness_Q8 ?? 0),
+      );
 
   SKP_Silk_NLSF_MSVQ_encode_FIX(
     nlsfIndicesArr,

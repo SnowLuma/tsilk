@@ -125,7 +125,7 @@ function createSampleState(): SampleState {
 
 function ensureNSQState(psEnc: EncoderState, useLbrr: boolean): NSQState {
     const key = useLbrr ? 'sNSQ_LBRR' : 'sNSQ';
-    const s = (psEnc as any)[key] as Partial<NSQState>;
+    const s = (psEnc[key] as Partial<NSQState>);
 
     if (!s.xq) s.xq = new Int16Array(2 * MAX_FRAME_LENGTH);
     if (!s.sLTP_shp_Q10) s.sLTP_shp_Q10 = new Int32Array(2 * MAX_FRAME_LENGTH);

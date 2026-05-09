@@ -207,7 +207,7 @@ export function SKP_Silk_noise_shape_analysis_FIX(
 
   // Control SNR with buffer/FEC penalties.
   const baseSNR_Q7 =
-    ((psEnc as any).SNR_dB_Q7 ?? psEncCtrl.current_SNR_dB_Q7) | 0;
+    (psEnc.SNR_dB_Q7 ?? psEncCtrl.current_SNR_dB_Q7) | 0;
   psEncCtrl.current_SNR_dB_Q7 =
     baseSNR_Q7 -
     SMULWB(LSHIFT(psEnc.BufferedInChannel_ms | 0, 7), SKP_FIX_CONST(0.05, 16));
@@ -216,7 +216,7 @@ export function SKP_Silk_noise_shape_analysis_FIX(
     psEnc.speech_activity_Q8 >
     SKP_FIX_CONST(Tuning.LBRR_SPEECH_ACTIVITY_THRES, 8)
   ) {
-    const fecComp_Q8 = ((psEnc as any).inBandFEC_SNR_comp_Q8 ?? 0) | 0;
+    const fecComp_Q8 = (psEnc.inBandFEC_SNR_comp_Q8 ?? 0) | 0;
     psEncCtrl.current_SNR_dB_Q7 -= RSHIFT(fecComp_Q8, 1);
   }
 
@@ -224,7 +224,7 @@ export function SKP_Silk_noise_shape_analysis_FIX(
   psEncCtrl.input_quality_Q14 = RSHIFT(
     (psEncCtrl.input_quality_bands_Q15[0] +
       psEncCtrl.input_quality_bands_Q15[1]) |
-      0,
+    0,
     2,
   );
   psEncCtrl.coding_quality_Q14 = RSHIFT(
@@ -253,7 +253,7 @@ export function SKP_Silk_noise_shape_analysis_FIX(
       psEnc.LTPCorr_Q15,
     );
     psEncCtrl.QuantOffsetType = 0;
-    (psEncCtrl as any).sparseness_Q8 = 0;
+    psEncCtrl.sparseness_Q8 = 0;
   } else {
     SNR_adj_dB_Q7 = SMLAWB(
       SNR_adj_dB_Q7,
@@ -295,7 +295,7 @@ export function SKP_Silk_noise_shape_analysis_FIX(
       ),
       7,
     );
-    (psEncCtrl as any).sparseness_Q8 = sparseness_Q8;
+    psEncCtrl.sparseness_Q8 = sparseness_Q8;
     psEncCtrl.QuantOffsetType =
       sparseness_Q8 > SKP_FIX_CONST(Tuning.SPARSENESS_THRESHOLD_QNT_OFFSET, 8)
         ? 0
@@ -328,10 +328,10 @@ export function SKP_Silk_noise_shape_analysis_FIX(
   warping_Q16 =
     psEnc.warping_Q16 > 0
       ? SMLAWB(
-          psEnc.warping_Q16,
-          psEncCtrl.coding_quality_Q14,
-          SKP_FIX_CONST(0.01, 18),
-        )
+        psEnc.warping_Q16,
+        psEncCtrl.coding_quality_Q14,
+        SKP_FIX_CONST(0.01, 18),
+      )
       : 0;
 
   // Compute shaping AR coefficients and gains for each subframe.
@@ -507,7 +507,7 @@ export function SKP_Silk_noise_shape_analysis_FIX(
     psEncCtrl.input_tilt_Q15 <= 0 &&
     psEncCtrl.sigtype === SIG_TYPE_UNVOICED
   ) {
-    const sparseness_Q8 = ((psEncCtrl as any).sparseness_Q8 ?? 0) | 0;
+    const sparseness_Q8 = (psEncCtrl.sparseness_Q8 ?? 0) | 0;
     if (psEnc.fs_kHz === 24 || psEnc.fs_kHz === 16) {
       const deEss_dB =
         psEnc.fs_kHz === 24
@@ -519,10 +519,10 @@ export function SKP_Silk_noise_shape_analysis_FIX(
       );
       tmp32 = SKP_Silk_log2lin(
         SKP_FIX_CONST(16.0, 7) -
-          SMULWB(
-            essStrength_Q15,
-            SMULWB(SKP_FIX_CONST(deEss_dB, 7), SKP_FIX_CONST(0.16, 17)),
-          ),
+        SMULWB(
+          essStrength_Q15,
+          SMULWB(SKP_FIX_CONST(deEss_dB, 7), SKP_FIX_CONST(0.16, 17)),
+        ),
       );
       gain_mult_Q16 = SMULWW(gain_mult_Q16, tmp32);
     }
@@ -539,10 +539,10 @@ export function SKP_Silk_noise_shape_analysis_FIX(
   strength_Q16 = SKP_MUL(
     SKP_FIX_CONST(Tuning.LOW_FREQ_SHAPING, 0),
     SKP_FIX_CONST(1.0, 16) +
-      SMULBB(
-        SKP_FIX_CONST(Tuning.LOW_QUALITY_LOW_FREQ_SHAPING_DECR, 1),
-        psEncCtrl.input_quality_bands_Q15[0] - SKP_FIX_CONST(1.0, 15),
-      ),
+    SMULBB(
+      SKP_FIX_CONST(Tuning.LOW_QUALITY_LOW_FREQ_SHAPING_DECR, 1),
+      psEncCtrl.input_quality_bands_Q15[0] - SKP_FIX_CONST(1.0, 15),
+    ),
   );
 
   if (psEncCtrl.sigtype === SIG_TYPE_VOICED) {
@@ -572,8 +572,8 @@ export function SKP_Silk_noise_shape_analysis_FIX(
     psEncCtrl.LF_shp_Q14[0] =
       LSHIFT(
         SKP_FIX_CONST(1.0, 14) -
-          b_Q14 -
-          SMULWB(strength_Q16, SMULWB(SKP_FIX_CONST(0.6, 16), b_Q14)),
+        b_Q14 -
+        SMULWB(strength_Q16, SMULWB(SKP_FIX_CONST(0.6, 16), b_Q14)),
         16,
       ) |
       ((b_Q14 - SKP_FIX_CONST(1.0, 14)) & 0xffff);
@@ -602,10 +602,10 @@ export function SKP_Silk_noise_shape_analysis_FIX(
     HarmShapeGain_Q16 = SMLAWB(
       SKP_FIX_CONST(Tuning.HARMONIC_SHAPING, 16),
       SKP_FIX_CONST(1.0, 16) -
-        SMULWB(
-          SKP_FIX_CONST(1.0, 18) - LSHIFT(psEncCtrl.coding_quality_Q14, 4),
-          psEncCtrl.input_quality_Q14,
-        ),
+      SMULWB(
+        SKP_FIX_CONST(1.0, 18) - LSHIFT(psEncCtrl.coding_quality_Q14, 4),
+        psEncCtrl.input_quality_Q14,
+      ),
       SKP_FIX_CONST(Tuning.HIGH_RATE_OR_LOW_QUALITY_HARMONIC_SHAPING, 16),
     );
     HarmShapeGain_Q16 = SMULWB(

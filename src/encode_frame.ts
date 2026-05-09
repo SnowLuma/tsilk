@@ -74,7 +74,7 @@ function LBRR_encode(
     if ((psEnc.Complexity | 0) > 0 && (psEnc.TargetRate_bps | 0) > rateOnlyParameters) {
         if ((psEnc.nFramesInPayloadBuf | 0) === 0) {
             copyNSQState(psEnc.sNSQ_LBRR, psEnc.sNSQ);
-            (psEnc.sCmn as any).LBRRprevLastGainIndex = psEnc.sShape.LastGainIndex | 0;
+            psEnc.sCmn.LBRRprevLastGainIndex = psEnc.sShape.LastGainIndex | 0;
             sEncCtrl.GainsIndices[0] = LIMIT_int(
                 (sEncCtrl.GainsIndices[0] | 0) + (psEnc.LBRR_GainIncreases | 0),
                 0,
@@ -83,7 +83,7 @@ function LBRR_encode(
         }
 
         const prev = {
-            value: (((psEnc.sCmn as any).LBRRprevLastGainIndex ?? psEnc.sShape.LastGainIndex) | 0),
+            value: (((psEnc.sCmn.LBRRprevLastGainIndex ?? psEnc.sShape.LastGainIndex) | 0)),
         };
         gainsDequant(
             sEncCtrl.Gains_Q16,
@@ -91,7 +91,7 @@ function LBRR_encode(
             prev,
             (psEnc.nFramesInPayloadBuf | 0) > 0 ? 1 : 0,
         );
-        (psEnc.sCmn as any).LBRRprevLastGainIndex = prev.value | 0;
+        psEnc.sCmn.LBRRprevLastGainIndex = prev.value | 0;
 
         if ((psEnc.nStatesDelayedDecision | 0) > 1 || (psEnc.warping_Q16 | 0) > 0) {
             NSQ_del_dec(

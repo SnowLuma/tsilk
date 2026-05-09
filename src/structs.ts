@@ -140,6 +140,8 @@ export class EncoderControl {
     public contourIndex: number = 0;
     public predGain_Q16: number = 0;
     public input_tilt_Q15: number = 0;
+    public sCmn: any;
+    public sparseness_Q8: number | undefined;
 }
 
 export class EncoderState {
@@ -211,6 +213,8 @@ export class EncoderState {
         },
         In_HP_State: new Int32Array(2)
     };
+    inBandFEC_SNR_comp_Q8: number | undefined;
+    mu_LTP_Q8: number | undefined;
 }
 
 export interface LPState {

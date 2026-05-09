@@ -78,18 +78,15 @@ export function decodeFrame(
         // Handle packet loss by extrapolation
         PLC(psDec, sDecCtrl, pOut, L, true);
     }
-    logStage('after_plc', pOut, L);
 
     // Copy to output buffer
     psDec.outBuf.set(pOut.subarray(0, L));
 
     // Ensure smooth connection of extrapolated and good frames
     PLC_glue_frames(psDec, sDecCtrl, pOut, L);
-    logStage('after_glue', pOut, L);
 
     // Comfort noise generation / estimation
     CNG(psDec, sDecCtrl, pOut, L);
-    logStage('after_cng', pOut, L);
 
     // HP filter output
     if (psDec.HP_A.length > 0 && psDec.HP_B.length > 0) {
@@ -102,7 +99,6 @@ export function decodeFrame(
             L
         );
     }
-    logStage('after_hp', pOut, L);
 
     psDec.lagPrev = sDecCtrl.pitchL[D.NB_SUBFR - 1];
 
