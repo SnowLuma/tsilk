@@ -25,28 +25,6 @@ export function decodeFrame(
     nBytes: number,
     action: number // 0 = normal, 1 = PLC
 ): DecodeFrameResult {
-    (globalThis as any).ts_dec_frame_call = (((globalThis as any).ts_dec_frame_call || 0) + 1) | 0;
-    const decCallNo = ((globalThis as any).ts_dec_frame_call | 0);
-    const logStage = (stage: string, out: Int16Array, len: number) => {
-        let sum = 0;
-        let maxAbs = 0;
-        for (let i = 0; i < len; i++) {
-            const v = out[i] | 0;
-            sum += v;
-            const a = Math.abs(v);
-            if (a > maxAbs) maxAbs = a;
-        }
-        console.log(JSON.stringify({
-            type: 'frame_stage',
-            callNo: decCallNo,
-            action,
-            stage,
-            len,
-            sum,
-            maxAbs,
-            head: Array.from(out.subarray(0, Math.min(16, len))),
-        }));
-    };
     const sDecCtrl = createDecoderControl();
     let ret = 0;
     let L = psDec.frame_length;
